@@ -1,5 +1,9 @@
 ## Unreleased
 
+## 0.1.1 - 2017-02-08
+
+Added omitted files.
+
 ### Added
 
 - Build system
