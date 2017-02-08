@@ -19,6 +19,7 @@
   "devDependencies": {
     "chai": "^3.5.0",
     "coffee-script": "^1.12.3",
+    "flour": "^0.5.8",
     "mocha": "^3.2.0"
   },
   "dependencies": {

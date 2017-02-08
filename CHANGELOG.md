@@ -1,5 +1,10 @@
 ## Unreleased
 
+### Added
+
+- Build system
+- `.npmignore` file
+
 ## 0.1.0 - 2017-02-08
 
 First release.
