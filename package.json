@@ -16,6 +16,10 @@
     "url": "https://github.com/CodeLenny/Promise.bar/issues"
   },
   "homepage": "https://github.com/CodeLenny/Promise.bar#readme",
+  "keywords": [
+    "progress-bar", "progressbar", "progress", "bar", "status",
+    "ascii", "console", "terminal", "cli"
+  ],
   "devDependencies": {
     "chai": "^3.5.0",
     "child-process-promise": "^2.2.0",
