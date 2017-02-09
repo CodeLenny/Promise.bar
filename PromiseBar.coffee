@@ -49,9 +49,23 @@ class Progress
 
   ###
   @property {String} a label for this progress bar.
-  @todo (optionally) pad labels to be the same length
   ###
-  get label: -> @opt "label"
+  get rawLabel: -> stripAnsi @opt "label"
+
+  ###
+  @property {String} a label for this progress bar, optionally padded to make all labels the same length.
+  ###
+  get label: ->
+    label = @opt "label"
+    return label unless @opt("pad") or @opt("padDeep")
+    max = 0
+    if @opt "padDeep"
+      max = @_deep_max_length
+    else if @parent
+      max = @parent.maxLabelLength()
+    else
+      max = @bar.maxLabelLength()
+    label + " ".repeat(max - @rawLabel.length - @indent.length)
 
   ###
   @property {Number} the total number of items.
@@ -101,14 +115,29 @@ class Progress
     barFormat = @opt "barFormat"
     console.log fmt.replace(':bar', barFormat "#{fill}#{unfilled}")
 
+
+  ###
+  Determine the maximum label length for progress bars.
+  @param {Boolean} deep if `true`, check nested progress bars.  Defaults to `false`.
+  @return {Number} the length of the longest label.
+  ###
+  maxLabelLength: (deep=no) ->
+    max = 0
+    for item in @children
+      if item.rawLabel then max = Math.max (item.indent.length + item.rawLabel.length), max
+      if deep then max = Math.max item.maxLabelLength(yes), max
+    max
+
   ###
   Draws this progress bar, including any other progress bars that are under this one in the hierarchy.
+  @param {Number} deep the maximum label length of any label
   ###
-  draw: ->
+  draw: (deep) ->
+    @_deep_max_length = deep
     @progressBar()
     return if @opt "flat"
     for bar in @children
-      bar.draw()
+      bar.draw deep
 
   unregister: ->
     @bar.items.splice @bar.items.indexOf(@), 1
@@ -179,6 +208,8 @@ class PromiseBar
       filled: "▇"
       empty: "-"
       indent: "  "
+      pad: yes
+      padDeep: no
       format: ->
         "#{@indent}#{@label} [:bar] #{@done}/#{@total} #{@percent}%"
       barFormat: (bar) -> bar
@@ -190,6 +221,10 @@ class PromiseBar
   @param {Object} opts options to configure the display of the progress bar.  Defaults are set in {ProgressBar#opts}.
   @option opts {String} label text to include in the progress bar.
   @option opts {Boolean} flat if `true`, progress bars won't indent under each other.  Defaults to `false`.
+  @option opts {Boolean} pad if `true`, labels on progress bars at the same depth are padded to be an equal length.
+    Defaults to `true`.
+  @option opts {Boolean} padDeep if `true`, all labels on progress bars are padded to be an equal length.  Defaults to
+    `false`.
   @option opts {String} filled a character to use for the solid progress bar.  Defaults to `"▇"`.
   @option opts {String} empty a character to use for unfilled progress.  Defaults to `"-"`.
   @option opts {String} indent characters inserted before progress bars to show hierarchy.  Defaults to `"  "`.
@@ -245,6 +280,18 @@ class PromiseBar
     @processing = no
 
   ###
+  Determine the maximum label length for progress bars.
+  @param {Boolean} deep if `true`, check nested progress bars.  Defaults to `false`.
+  @return {Number} the length of the longest label.
+  ###
+  maxLabelLength: (deep=no) ->
+    max = 0
+    for item in @items
+      if item.rawLabel then max = Math.max (item.indent.length + item.rawLabel.length), max
+      if deep then max = Math.max item.maxLabelLength(yes), max
+    max
+
+  ###
   Draw the progress bars to stdout, including a blank line at the start.
   ###
   draw: ->
@@ -252,7 +299,7 @@ class PromiseBar
     @processing = yes
     console.log ""
     for item in @items
-      item.draw()
+      item.draw @maxLabelLength(yes)
     @cursor.up(@lines() + 1)
     @processing = no
 

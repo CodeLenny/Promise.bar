@@ -1,5 +1,7 @@
 # Promise.bar
 
+![Demo](https://cloud.githubusercontent.com/assets/9272847/22797422/28f948ba-eecc-11e6-82de-e6c283528b6a.png)
+
 ## Usage
 
 Doing a bunch of tasks asynchronously with promises, and want a status indicator?
