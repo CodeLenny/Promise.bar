@@ -1,7 +1,7 @@
 {
   "name": "promise.bar",
   "version": "0.1.1",
-  "description": "Scrollbar to animate the status of Promise.all",
+  "description": "Progress bar to animate the status of Promise.all",
   "main": "PromiseBar.js",
   "scripts": {
     "test": "mocha --compilers coffee:coffee-script/register"
