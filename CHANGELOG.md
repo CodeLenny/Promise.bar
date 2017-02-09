@@ -1,5 +1,7 @@
 ## Unreleased
 
+## 0.1.2 - 2017-02-09
+
 ### Added
 
 - Progress Bar Hierarchy/Indentation
