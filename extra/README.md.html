@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset='UTF-8'>
+  <title>CoffeeScript API Documentation</title>
+  <script src='../javascript/application.js'></script>
+  <script src='../javascript/search.js'></script>
+  <link rel='stylesheet' href='../stylesheets/application.css' type='text/css'>
+</head>
+  <body>
+    <div id='base' data-path='../'></div>
+<div id='header'>
+  <div id='menu'>
+    <a href='../extra/README.md.html' title='Promise.bar'>
+      Promise.bar
+    </a>
+    &raquo;
+    <a href='../alphabetical_index.html' title='Index'>
+      Index
+    </a>
+    &raquo;
+    <span class='title'>README.md</span>
+  </div>
+</div>
+    <div id='content'>
+      <nav class='toc'>
+        <p class='title'>
+          <a class='hide_toc' href='#'>
+            <strong>Table of Contents</strong>
+          </a>
+          <small>
+            (<a class='float_toc' href='#'>left</a>)
+          </small>
+        </p>
+      </nav>
+      <div id='filecontents'>
+        <h1 id="promise-bar">Promise.bar</h1>
+<div align="center">
+  <img src="https://cloud.githubusercontent.com/assets/9272847/22797422/28f948ba-eecc-11e6-82de-e6c283528b6a.png">
+</div>
+
+<h2 id="usage">Usage</h2><p>Doing a bunch of tasks asynchronously with promises, and want a status indicator?</p><pre><code class="lang-javascript">let compiles = [
+  compile(&quot;a.coffee&quot;),
+  compile(&quot;b.coffee&quot;)
+];
+Promise.all(compiles).then(() =&gt; {
+  console.log(&quot;Compile Done!&quot;);
+});
+</code></pre><p>Simply replace <code>Promise.all</code> with <code>PromiseBar.all</code>, and watch a progress bar fill as compilations finish!</p><pre><code class="lang-javascript">let PromiseBar = require(&quot;promisebar&quot;);
+PromiseBar.enable();
+
+PromiseBar.all(compiles, {label: &quot;Minify&quot;}).then(() -&gt; {
+  console.log(&quot;Compile Done!&quot;);
+});
+</code></pre>
+<h3 id="alias-as-promise-bar-">Alias as <code>Promise.bar</code></h3><p>Make PromiseBar even cuter.</p><pre><code class="lang-javascript">Promise.bar = function() {
+  return PromiseBar.all(arguments);
+};
+</code></pre>
+<h3 id="stacked-progress-bars">Stacked Progress Bars</h3><p>Want to stack progress bars?</p><pre><code class="lang-javascript">child = PromiseBar.all([], {label: &quot;Child&quot;});
+parent = PromiseBar.all([child], {label: &quot;Parent&quot;});
+</code></pre><p>The child will automatically be indented under the parent.  Disable this for a progress bar by passing <code>flat: false</code> to
+<code>PromiseBar#all</code>, or disable it for all progress bars with <code>PromiseBar.conf.flat = false;</code>.</p><h3 id="color-the-progress-bar">Color the Progress Bar</h3><p>Add colors to your progress bars with libraries like <a href="https://github.com/chalk/chalk">Chalk</a>.</p><pre><code class="lang-javascript">let chalk = require(&quot;chalk&quot;);
+
+PromiseBar.all([], {label: chalk.blue(&quot;Progress&quot;), barFormat: chalk.dim.blue});
+</code></pre><p>The label will be colored blue, and the progress bar will be light blue.  You can provide any function to <code>barFormat</code>
+to transform the output.</p><h3 id="always-below-console-log-content">Always Below <code>console.log</code> Content</h3><p>Progress bars will always appear under other <code>stdout</code> content.</p><h3 id="all-options">All Options</h3><p>Promise.bar supports much more customization than the options listed here.  Please check out the full API documentation
+for other configurable options.</p>
+      </div>
+    </div>
+    <div id='footer'>
+  By
+  <a href='https://github.com/coffeedoc/codo' title='CoffeeScript API documentation generator'>
+    Codo
+  </a>
+  2.1.2
+  &#10034;
+  Press H to see the keyboard shortcuts
+  &#10034;
+  <a href='http://twitter.com/netzpirat' target='_parent'>@netzpirat</a>
+  &#10034;
+  <a href='http://twitter.com/_inossidabile' target='_parent'>@_inossidabile</a>
+</div>
+<iframe id='search_frame'></iframe>
+<div id='fuzzySearch'>
+  <input type='text'>
+  <ol></ol>
+</div>
+<div id='help'>
+  <p>
+    Quickly fuzzy find classes, mixins, methods, file:
+  </p>
+  <ul>
+    <li>
+      <span>T</span>
+      Open fuzzy finder dialog
+    </li>
+  </ul>
+  <p>
+    Control the navigation frame:
+  </p>
+  <ul>
+    <li>
+      <span>L</span>
+      Toggle list view
+    </li>
+    <li>
+      <span>C</span>
+      Show class list
+    </li>
+    <li>
+      <span>I</span>
+      Show mixin list
+    </li>
+    <li>
+      <span>F</span>
+      Show file list
+    </li>
+    <li>
+      <span>M</span>
+      Show method list
+    </li>
+    <li>
+      <span>E</span>
+      Show extras list
+    </li>
+  </ul>
+  <p>
+    You can focus and blur the search input:
+  </p>
+  <ul>
+    <li>
+      <span>S</span>
+      Focus search input
+    </li>
+    <li>
+      <span>Esc</span>
+      Blur search input
+    </li>
+  </ul>
+</div>
+  </body>
+</html>
