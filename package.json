@@ -1,6 +1,6 @@
 {
   "name": "promise.bar",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Progress bar to animate the status of Promise.all",
   "main": "PromiseBar.js",
   "scripts": {
