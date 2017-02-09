@@ -1,4 +1,5 @@
 pathval = require "pathval"
+stripAnsi = require "strip-ansi"
 
 ###
 An individual item to be used with PromiseBar.
@@ -21,6 +22,7 @@ class Progress
   constructor: (@bar, @items, @_opts) ->
     for item in @items
       Promise.resolve(item).then => @tick()
+      continue if @opt "flat"
       if item.PromiseBar? and item.PromiseBar instanceof Progress
         item.PromiseBar.parent = @
         item.PromiseBar.unregister()
@@ -68,7 +70,8 @@ class Progress
   @param {String} k the path to a configuration option e.g. "categories[1].name"
   @return {Any} the value requested.
   ###
-  opt: (k) -> pathval.getPathValue(@_opts, k) ? pathval.getPathValue(@bar.conf, k)
+  opt: (k) ->
+    if pathval.hasProperty(@_opts, k) then pathval.getPathValue(@_opts, k) else pathval.getPathValue(@bar.conf, k)
 
   get children: -> (bar.PromiseBar for bar in @items when bar.PromiseBar and bar.PromiseBar instanceof Progress)
 
@@ -78,6 +81,7 @@ class Progress
   ###
   lines: ->
     lines = 1
+    return lines if @opt "flat"
     for bar in @children
       lines += bar.lines()
     lines
@@ -90,17 +94,19 @@ class Progress
     fn = @opt "format"
     fmt = fn.apply(@, [])
     return fmt if fmt.indexOf(":bar") is -1
-    barLength = process.stdout.columns - fmt.replace(':bar', '').length
+    barLength = process.stdout.columns - stripAnsi(fmt.replace(':bar', '')).length
     filled = if @total > 0 then Math.floor barLength * (@done / @total) else 0
     fill = @opt("filled")[0].repeat filled
     unfilled = @opt("empty")[0].repeat barLength - filled
-    console.log fmt.replace(':bar', "#{fill}#{unfilled}")
+    barFormat = @opt "barFormat"
+    console.log fmt.replace(':bar', barFormat "#{fill}#{unfilled}")
 
   ###
   Draws this progress bar, including any other progress bars that are under this one in the hierarchy.
   ###
   draw: ->
     @progressBar()
+    return if @opt "flat"
     for bar in @children
       bar.draw()
 
@@ -175,6 +181,7 @@ class PromiseBar
       indent: "  "
       format: ->
         "#{@indent}#{@label} [:bar] #{@done}/#{@total} #{@percent}%"
+      barFormat: (bar) -> bar
       percentLength: 3
 
   ###
@@ -188,6 +195,8 @@ class PromiseBar
   @option opts {String} indent characters inserted before progress bars to show hierarchy.  Defaults to `"  "`.
   @option opts {Function} format a function that returns the string of the progress bar.  See variables in {Progress} to
     insert.  `":bar"` will be replaced with a progress bar filling the available space.
+  @option opts {Function} barFormat a function that transforms the progress bar.  Could be used to color the progress
+    bar: `barFormat: (bar) => chalk.blue(bar)`.
   @option opts {Number} percentLength the number of digits to include for percentages.  Should be above `3`.
   ###
   all: (items, opts={}) ->

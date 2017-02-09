@@ -7,6 +7,9 @@
   - `Progress` finds progress-bar children on initialization
   - `Progress#indent` returns the indentation that should proceed the progress bar
   - `Progress#draw` draws descendants
+- Color Formatting
+  - ANSI codes are ignored when calculating bar length, so `label` and other fields can have color codes
+  - Added `barFormat` option, which can transform the bar (add color, etc.)
 
 ## 0.1.1 - 2017-02-08
 

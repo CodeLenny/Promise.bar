@@ -1,5 +1,7 @@
 # Promise.bar
 
+## Usage
+
 Doing a bunch of tasks asynchronously with promises, and want a status indicator?
 
 ```javascript
@@ -26,5 +28,38 @@ PromiseBar.all(minifies, {label: "Minify"}).then(() -> {
 });
 ```
 
-Promise.bar works with simultaneous progress bars, and can handle console output - progress bars will always appear
-under other `stdout` content.
+### Stacked Progress Bars
+
+Want to stack progress bars?
+
+```javascript
+child = PromiseBar.all([], {label: "Child"});
+parent = PromiseBar.all([child], {label: "Parent"});
+```
+
+The child will automatically be indented under the parent.  Disable this for a progress bar by passing `flat: false` to
+`PromiseBar#all`, or disable it for all progress bars with `PromiseBar.conf.flat = false;`.
+
+### Color the Progress Bar
+
+Add colors to your progress bars with libraries like [Chalk][].
+
+```javascript
+let chalk = require("chalk");
+
+PromiseBar.all([], {label: chalk.blue("Progress"), barFormat: chalk.dim.blue});
+```
+
+The label will be colored blue, and the progress bar will be light blue.  You can provide any function to `barFormat`
+to transform the output.
+
+### Always Below `console.log` Content
+
+Progress bars will always appear under other `stdout` content.
+
+### All Options
+
+Promise.bar supports much more customization than the options listed here.  Please check out the full API documentation
+for other configurable options.
+
+[Chalk]: https://github.com/chalk/chalk

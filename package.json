@@ -20,7 +20,8 @@
     "chai": "^3.5.0",
     "coffee-script": "^1.12.3",
     "flour": "^0.5.8",
-    "mocha": "^3.2.0"
+    "mocha": "^3.2.0",
+    "strip-ansi": "^3.0.1"
   },
   "dependencies": {
     "ansi": "^0.3.1",
