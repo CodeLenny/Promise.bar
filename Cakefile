@@ -18,7 +18,7 @@ git checkout --orphan gh-pages
 ```
 ###
 task "docs", "Build gh-pages", (opts) ->
-  exec "cd gh-pages; git branch -d gh-pages; git fetch; git checkout origin/gh-pages -b gh-pages"
+  exec "cd gh-pages; git checkout master; git branch -d gh-pages; git fetch; git checkout origin/gh-pages -b gh-pages"
     .then ->
       exec "$(npm bin)/codo --output gh-pages PromiseBar.coffee - README.md"
     .then ->

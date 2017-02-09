@@ -2,6 +2,9 @@
 
 ## 0.1.2 - 2017-02-09
 
+Added features: Progress bars can nest.  Labels and progress bars can be colored.
+Labels are padded to be equal length.
+
 ### Added
 
 - Progress Bar Hierarchy/Indentation
