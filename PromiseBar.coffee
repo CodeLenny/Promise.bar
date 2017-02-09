@@ -21,6 +21,9 @@ class Progress
   constructor: (@bar, @items, @_opts) ->
     for item in @items
       Promise.resolve(item).then => @tick()
+      if item.PromiseBar? and item.PromiseBar instanceof Progress
+        item.PromiseBar.parent = @
+        item.PromiseBar.unregister()
 
   ###
   Called when one of the Promise items is resolved.
@@ -29,6 +32,18 @@ class Progress
     @bar.clear()
     ++@done
     @bar.draw()
+
+  ###
+  @property {Progress} set to another progress bar if this element appears under another element.
+  ###
+  parent: null
+
+  ###
+  @property {String} the proper number of spaces to indent progress bars that are in a hierarchy.
+  ###
+  get indent: ->
+    return "" unless @parent
+    @parent.indent + @opt "indent"
 
   ###
   @property {String} a label for this progress bar.
@@ -55,17 +70,23 @@ class Progress
   ###
   opt: (k) -> pathval.getPathValue(@_opts, k) ? pathval.getPathValue(@bar.conf, k)
 
+  get children: -> (bar.PromiseBar for bar in @items when bar.PromiseBar and bar.PromiseBar instanceof Progress)
+
   ###
   The number of lines needed to draw this progress bar.
   @return {Number}
   ###
-  lines: -> 1
+  lines: ->
+    lines = 1
+    for bar in @children
+      lines += bar.lines()
+    lines
 
   ###
   Draws this progress bar to the console.
   @return {String} the formatted progress bar
   ###
-  draw: ->
+  progressBar: ->
     fn = @opt "format"
     fmt = fn.apply(@, [])
     return fmt if fmt.indexOf(":bar") is -1
@@ -74,6 +95,17 @@ class Progress
     fill = @opt("filled")[0].repeat filled
     unfilled = @opt("empty")[0].repeat barLength - filled
     console.log fmt.replace(':bar', "#{fill}#{unfilled}")
+
+  ###
+  Draws this progress bar, including any other progress bars that are under this one in the hierarchy.
+  ###
+  draw: ->
+    @progressBar()
+    for bar in @children
+      bar.draw()
+
+  unregister: ->
+    @bar.items.splice @bar.items.indexOf(@), 1
 
 ###
 PromiseBar extends `Promise.all()` to display a progress bar representing the state of each item.
@@ -136,11 +168,13 @@ class PromiseBar
 
   constructor: ->
     @conf =
+      flat: no
       label: ""
       filled: "▇"
       empty: "-"
+      indent: "  "
       format: ->
-        "#{@label} [:bar] #{@done}/#{@total} #{@percent}%"
+        "#{@indent}#{@label} [:bar] #{@done}/#{@total} #{@percent}%"
       percentLength: 3
 
   ###
@@ -148,8 +182,10 @@ class PromiseBar
   @param {Array<Any>} items an array of items, same as `Promise.all()`
   @param {Object} opts options to configure the display of the progress bar.  Defaults are set in {ProgressBar#opts}.
   @option opts {String} label text to include in the progress bar.
+  @option opts {Boolean} flat if `true`, progress bars won't indent under each other.  Defaults to `false`.
   @option opts {String} filled a character to use for the solid progress bar.  Defaults to `"▇"`.
   @option opts {String} empty a character to use for unfilled progress.  Defaults to `"-"`.
+  @option opts {String} indent characters inserted before progress bars to show hierarchy.  Defaults to `"  "`.
   @option opts {Function} format a function that returns the string of the progress bar.  See variables in {Progress} to
     insert.  `":bar"` will be replaced with a progress bar filling the available space.
   @option opts {Number} percentLength the number of digits to include for percentages.  Should be above `3`.
@@ -157,10 +193,13 @@ class PromiseBar
   all: (items, opts={}) ->
     return Promise.all(items) unless @enabled
     @clear()
+    progress = new Progress @, items, opts
     @items ?= []
-    @items.push new Progress @, items, opts
+    @items.push progress
     @draw()
-    Promise.all items
+    promise = Promise.all items
+    promise.PromiseBar = progress
+    promise
 
   ###
   Sets up PromiseBar to manage stdout.  Until `enable()` is called, `PromiseBar.all()` acts like `Promise.all()`.
