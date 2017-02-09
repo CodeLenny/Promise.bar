@@ -70,7 +70,8 @@ Progress bars will always appear under other `stdout` content.
 
 ### All Options
 
-Promise.bar supports much more customization than the options listed here.  Please check out the full API documentation
-for other configurable options.
+Promise.bar supports much more customization than the options listed here.  Please check out the
+[full API documentation][PromiseBar#all] for other configurable options.
 
 [Chalk]: https://github.com/chalk/chalk
+[PromiseBar#all]: https://promisebar.codelenny.com/#https://promisebar.codelenny.com/class/PromiseBar.html#all-dynamic

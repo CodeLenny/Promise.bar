@@ -18,6 +18,8 @@
   "homepage": "https://github.com/CodeLenny/Promise.bar#readme",
   "devDependencies": {
     "chai": "^3.5.0",
+    "child-process-promise": "^2.2.0",
+    "codo": "^2.1.2",
     "coffee-script": "^1.12.3",
     "flour": "^0.5.8",
     "mocha": "^3.2.0",

@@ -87,6 +87,9 @@ class Progress
   opt: (k) ->
     if pathval.hasProperty(@_opts, k) then pathval.getPathValue(@_opts, k) else pathval.getPathValue(@bar.conf, k)
 
+  ###
+  @property {Array<Progress>} the children progress bars that are descendants of this one.
+  ###
   get children: -> (bar.PromiseBar for bar in @items when bar.PromiseBar and bar.PromiseBar instanceof Progress)
 
   ###

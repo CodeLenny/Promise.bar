@@ -11,6 +11,7 @@
   - ANSI codes are ignored when calculating bar length, so `label` and other fields can have color codes
   - Added `barFormat` option, which can transform the bar (add color, etc.)
 - Optionally pads labels to make labels an equal length.
+- Documentation published to `gh-pages`.
 
 ## 0.1.1 - 2017-02-08
 
