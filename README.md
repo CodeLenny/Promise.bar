@@ -9,14 +9,11 @@
 Doing a bunch of tasks asynchronously with promises, and want a status indicator?
 
 ```javascript
-let files = ["a.coffee", "b.coffee"];
-let minifies = [];
-for(const file of files) {
-  let compile = compile(file);
-  let minify = compile.then(minify);
-  minifies.push(minify);
-}
-Promise.all(minifies).then(() -> {
+let compiles = [
+  compile("a.coffee"),
+  compile("b.coffee")
+];
+Promise.all(compiles).then(() => {
   console.log("Compile Done!");
 });
 ```
@@ -27,7 +24,7 @@ Simply replace `Promise.all` with `PromiseBar.all`, and watch a progress bar fil
 let PromiseBar = require("promisebar");
 PromiseBar.enable();
 
-PromiseBar.all(minifies, {label: "Minify"}).then(() -> {
+PromiseBar.all(compiles, {label: "Minify"}).then(() -> {
   console.log("Compile Done!");
 });
 ```
