@@ -1,6 +1,8 @@
 # Promise.bar
 
-![Demo](https://cloud.githubusercontent.com/assets/9272847/22797422/28f948ba-eecc-11e6-82de-e6c283528b6a.png)
+<div align="center">
+  <img src="https://cloud.githubusercontent.com/assets/9272847/22797422/28f948ba-eecc-11e6-82de-e6c283528b6a.png">
+</div>
 
 ## Usage
 
