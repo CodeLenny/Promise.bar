@@ -29,6 +29,16 @@ PromiseBar.all(compiles, {label: "Minify"}).then(() -> {
 });
 ```
 
+### Alias as `Promise.bar`
+
+Make PromiseBar even cuter.
+
+```javascript
+Promise.bar = function() {
+  return PromiseBar.all(arguments);
+};
+```
+
 ### Stacked Progress Bars
 
 Want to stack progress bars?
