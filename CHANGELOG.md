@@ -1,5 +1,9 @@
 ## Unreleased
 
+## 0.1.3 - 2017-02-10
+
+Improved documentation, updated out of date resource.
+
 ## 0.1.2 - 2017-02-09
 
 Added features: Progress bars can nest.  Labels and progress bars can be colored.
