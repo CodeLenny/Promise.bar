@@ -37,23 +37,20 @@
         <h1 id="promise-bar">Promise.bar</h1>
 <div align="center">
   <img src="https://cloud.githubusercontent.com/assets/9272847/22797422/28f948ba-eecc-11e6-82de-e6c283528b6a.png">
-</div>
-
-<h2 id="usage">Usage</h2><p>Doing a bunch of tasks asynchronously with promises, and want a status indicator?</p><pre><code class="lang-javascript">let compiles = [
+</div><p><a href="https://www.npmjs.com/package/promise.bar"><img src="https://img.shields.io/npm/v/promise.bar.svg" alt="Promise.bar on NPM"></a></p><h2 id="usage">Usage</h2><p>Doing a bunch of tasks asynchronously with promises, and want a status indicator?</p><pre><code class="lang-javascript">let compiles = [
   compile(&quot;a.coffee&quot;),
   compile(&quot;b.coffee&quot;)
 ];
 Promise.all(compiles).then(() =&gt; {
   console.log(&quot;Compile Done!&quot;);
 });
-</code></pre><p>Simply replace <code>Promise.all</code> with <code>PromiseBar.all</code>, and watch a progress bar fill as compilations finish!</p><pre><code class="lang-javascript">let PromiseBar = require(&quot;promisebar&quot;);
+</code></pre><p>Simply replace <code>Promise.all</code> with <code>PromiseBar.all</code>, and watch a progress bar fill as compilations finish!</p><pre><code class="lang-javascript">let PromiseBar = require(&quot;promise.bar&quot;);
 PromiseBar.enable();
 
 PromiseBar.all(compiles, {label: &quot;Minify&quot;}).then(() -&gt; {
   console.log(&quot;Compile Done!&quot;);
 });
-</code></pre>
-<h3 id="alias-as-promise-bar-">Alias as <code>Promise.bar</code></h3><p>Make PromiseBar even cuter.</p><pre><code class="lang-javascript">Promise.bar = function() {
+</code></pre><p>(Install PromiseBar via <code>npm install --save promise.bar</code>)</p><h3 id="alias-as-promise-bar-">Alias as <code>Promise.bar</code></h3><p>Make PromiseBar even cuter.</p><pre><code class="lang-javascript">Promise.bar = function() {
   return PromiseBar.all(arguments);
 };
 </code></pre>
