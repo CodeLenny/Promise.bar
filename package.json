@@ -1,6 +1,6 @@
 {
   "name": "promise.bar",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Progress bar to animate the status of Promise.all",
   "main": "PromiseBar.js",
   "scripts": {
@@ -17,8 +17,15 @@
   },
   "homepage": "https://github.com/CodeLenny/Promise.bar#readme",
   "keywords": [
-    "progress-bar", "progressbar", "progress", "bar", "status",
-    "ascii", "console", "terminal", "cli"
+    "progress-bar",
+    "progressbar",
+    "progress",
+    "bar",
+    "status",
+    "ascii",
+    "console",
+    "terminal",
+    "cli"
   ],
   "devDependencies": {
     "chai": "^3.5.0",
