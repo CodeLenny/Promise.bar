@@ -79,6 +79,17 @@ Build: |----------|
         <dd class='desc'>
           <code>true</code> if PromiseBar is in charge of stdout. 
         </dd>
+        <dt id='ended-property'>
+          <span class='signature'>
+            (Boolean)
+            <b>
+              ended
+            </b>
+          </span>
+        </dt>
+        <dd class='desc'>
+          <code>true</code> if PromiseBar has been stopped, and shouldn&#39;t be involved in output anymore. 
+        </dd>
         <dt id='processing-property'>
           <span class='signature'>
             (Boolean)
@@ -126,6 +137,18 @@ Build: |----------|
     </span>
     <span class='desc'>
       Sets up PromiseBar to manage stdout. 
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#end-dynamic'>
+        #
+(void)
+<b>end</b><span>()</span>
+      </a>
+    </span>
+    <span class='desc'>
+      Restore original stdout behavior, and prevent PromiseBar from trying changing the output. 
     </span>
   </li>
   <li>
@@ -358,7 +381,20 @@ Build: |----------|
     redraw on console resize 
   </div>
   <p>Sets up PromiseBar to manage stdout.  Until <code>enable()</code> is called, <code>PromiseBar.all()</code> acts like <code>Promise.all()</code>.
-Can be called multiple times without ill effect.</p>
+Can be called multiple times without ill effect, as long as <a href='../class/PromiseBar.html#end-dynamic'>PromiseBar#end</a> hasn&#39;t been called.</p>
+</div>
+<div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='end-dynamic'>
+      #
+(void)
+<b>end</b><span>()</span>
+      <br>
+    </p>
+    <div class='docstring'>
+  <p>Restore original stdout behavior, and prevent PromiseBar from trying changing the output.</p>
 </div>
 <div class='tags'>
 </div>
