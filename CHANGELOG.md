@@ -1,5 +1,7 @@
 ## Unreleased
 
+## 0.1.4 - 2017-02-16
+
 ### Added
 
 - `PromiseBar.end()` stops Promise.bar from intercepting all `stdout` messages.
