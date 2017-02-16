@@ -200,6 +200,11 @@ class PromiseBar
   enabled: no
 
   ###
+  @property {Boolean} `true` if PromiseBar has been stopped, and shouldn't be involved in output anymore.
+  ###
+  ended: no
+
+  ###
   @property {Boolean} `true` if PromiseBar is internally controlling `process.stdout`.
   ###
   processing: no
@@ -250,7 +255,7 @@ class PromiseBar
 
   ###
   Sets up PromiseBar to manage stdout.  Until `enable()` is called, `PromiseBar.all()` acts like `Promise.all()`.
-  Can be called multiple times without ill effect.
+  Can be called multiple times without ill effect, as long as {PromiseBar#end} hasn't been called.
   @todo redraw on console resize
   ###
   enable: ->
@@ -260,21 +265,30 @@ class PromiseBar
     @draw()
     @bufferstdout()
     process.stdout.on "newline", =>
-      return if @processing
+      return if @processing or @ended
       @clear()
       @draw()
     process.on "exit", =>
-      return unless @items and Array.isArray(@items)
+      @end()
+    @enabled = yes
+
+  ###
+  Restore original stdout behavior, and prevent PromiseBar from trying changing the output.
+  ###
+  end: ->
+    return if @ended
+    if @items and Array.isArray(@items)
       @processing = yes
       for i in [0..@lines()]
         @cursor.down()
-    @enabled = yes
+    @ended = yes
 
   ###
   Removes all progress bars in stdout.  Assumes that the cursor is on the first line of the progress bars
   (under the blank line).  Returns the cursor to the starting position.
   ###
   clear: ->
+    return if @ended
     return unless @items and Array.isArray(@items)
     @processing = yes
     for i in [1..@lines()]
@@ -298,6 +312,7 @@ class PromiseBar
   Draw the progress bars to stdout, including a blank line at the start.
   ###
   draw: ->
+    return if @ended
     return unless @items and Array.isArray(@items)
     @processing = yes
     console.log ""
@@ -320,7 +335,7 @@ class PromiseBar
   bufferstdout: ->
     write = process.stdout.write
     process.stdout.write = (data, args...) =>
-      if typeof data isnt "string" or @processing or data.indexOf("\n") is -1
+      if typeof data isnt "string" or @processing or @ended or data.indexOf("\n") is -1
         return write.apply process.stdout, [data, args...]
       lines = data.split("\n")
       if data.slice(-1) is "\n" then lines = lines.slice(0, -1)
