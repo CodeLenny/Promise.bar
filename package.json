@@ -1,6 +1,6 @@
 {
   "name": "promise.bar",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "Progress bar to animate the status of Promise.all",
   "main": "PromiseBar.js",
   "scripts": {
@@ -33,11 +33,11 @@
     "codo": "^2.1.2",
     "coffee-script": "^1.12.3",
     "flour": "^0.5.8",
-    "mocha": "^3.2.0",
-    "strip-ansi": "^3.0.1"
+    "mocha": "^3.2.0"
   },
   "dependencies": {
     "ansi": "^0.3.1",
-    "pathval": "^1.1.0"
+    "pathval": "^1.1.0",
+    "strip-ansi": "^3.0.1"
   }
 }
