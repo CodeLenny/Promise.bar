@@ -5,6 +5,7 @@
 </div>
 
 [![Promise.bar on NPM](https://img.shields.io/npm/v/promise.bar.svg)](https://www.npmjs.com/package/promise.bar)
+[![Build Status](https://travis-ci.org/CodeLenny/Promise.bar.svg?branch=master)](https://travis-ci.org/CodeLenny/Promise.bar)
 
 ## Usage
 
