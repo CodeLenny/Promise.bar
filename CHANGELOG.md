@@ -1,5 +1,11 @@
 ## Unreleased
 
+## 0.1.5 - 2017-08-18
+
+### Modified
+
+- `strip-ansi` was wrongly listed as a `devDependency` instead of a `dependency`.  This has been fixed. (#3)
+
 ## 0.1.4 - 2017-02-16
 
 ### Added
